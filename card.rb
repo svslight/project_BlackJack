@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# Coding card class (card = initialize(rank, suit), card.show)
 
 class Card
   SUITS = %w[Hearts Spades Clubs Diamonds].freeze
