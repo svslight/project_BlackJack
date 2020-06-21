@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# Coding deck class (create_deck, shuffle, deal_card(deck.pop))
 
 require_relative 'card'
 
