@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Добаление класса для карточной колоды
+
 require_relative 'card'
 
 class Deck
