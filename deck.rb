@@ -1,33 +1,24 @@
 # frozen_string_literal: true
 
-# Добаление класса для карточной колоды
+# Create new card deck
 
 require_relative 'card'
 
 class Deck
-  SUITS = %w[Hearts Spades Clubs Diamonds].freeze
-  RANKS = %w[2 3 4 5 6 7 8 9 10 J Q K A].freeze
-
   attr_reader :deck, :suits, :ranks
 
-  def initialize(suits, ranks)
+  def initialize
     @deck = []
     @suits = suits
     @ranks = ranks
     create_deck
   end
 
-  def shuffle
-    @deck.shuffle!
-  end
-
-  def deal_card
-    @deck.pop
-  end
-
   def create_deck
-    suits.each do |suit|
-      ranks.each do |rank|
+    card_generator = [(2..10).to_a, Card::PICTURES].flatten!
+    # puts "card_generator = #{card_generator}"
+    card_generator.each do |rank|
+      Card::SUITS.each do |suit|
         @deck.push(Card.new(suit, rank))
       end
     end
