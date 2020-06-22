@@ -1,30 +1,25 @@
 # frozen_string_literal: true
 
-# Добавление класса для карт
+# Create card
 
 class Card
-  SUITS = %w[Hearts Spades Clubs Diamonds].freeze
-  RANKS = %w[2 3 4 5 6 7 8 9 10 J Q K A].freeze
+  SUITS = %w[♠ ♥ ♣ ♦].freeze
+  PICTURES = %i[J Q K A].freeze
+  SCORES = { J: 10, Q: 10, K: 10, A: 11 }.freeze
 
-  attr_accessor :suit, :rank, :show
+  attr_reader :suit, :rank
+  attr_accessor :score
 
   def initialize(suit, rank)
-    @show = true
-
-    if SUITS.include?(suit) && RANKS.include?(rank)
-      @suit = suit
-      @rank = rank
-    else
-      @suit = 'UNKNOWN'
-      @rank = 'UNKNOWN'
-    end
+    @suit = suit
+    @rank = rank
   end
 
-  def to_s
-    if show
-      "#{rank} #{suit}"
-    else
-      'Карту не видим'
-    end
+  def price
+    @score = (2..10).include?(@rank) ? @rank : SCORES[@rank]
+  end
+
+  def face
+    "#{rank} #{suit}"
   end
 end
