@@ -31,37 +31,36 @@ class Interface
   def main_menu
     puts "\nВаш ход: 1 - Пропустить ход;  2 - Взять карту;  3 - Открыть карты;"
     choice = gets.chomp
-    if choice == '1'
-      stand
-    elsif choice == '2'
-      hit
-    elsif choice == '3'
+    case choice
+    when '1'
+      @game.dealers_step ? stand_user : stand_dealer
+    when '2'
+      @game.valid_cards_user ? hit_max_cards : hit
+    when '3'
       open
     end
   end
 
-  def stand
-    @game.dealers_step
+  def stand_user
+    puts "\nДилер взял карту, у него 3 карты: [*] [*] [*]"
+    open
+  end
 
-    if @game.valid_cards
-      puts "\nДилер взял карту, у него 3 карты: [*] [*] [*]"
-      open
-    else
-      puts "\nДилер пропустил ход..."
-      main_menu
-    end
+  def stand_dealer
+    puts "\nДилер пропустил ход..."
+    main_menu
+  end
+
+  def hit_max_cards
+    puts "\nУ вас максимальное количество карт!"
+    main_menu
   end
 
   def hit
-    if @game.valid_cards_user
-      puts "\nУ вас максимальное количество карт!"
-      main_menu
-    else
-      @game.one_card
-      puts "\nВы взяли карту, у вас на руках: #{@game.user.hand.cards.map(&:face)}"
-      puts "У вас #{@game.user.hand.count_cards} очков"
-      stand
-    end
+    @game.one_card
+    puts "\nВы взяли карту, у вас на руках: #{@game.user.hand.cards.map(&:face)}"
+    puts "У вас #{@game.user.hand.count_cards} очков"
+    @game.dealers_step ? stand_user : stand_dealer
   end
 
   def open
@@ -70,28 +69,20 @@ class Interface
     puts "Очков: #{@game.user.hand.score}"
     puts "\nУ Дилера на руках: #{@game.dealer.hand.cards.map(&:face)}"
     puts "Очков: #{@game.dealer.hand.score}"
-    @game.processing ? processing_message : great_message
+    great_message
   end
 
   def great_message
-    if @game.win == @game.dealer
+    case @game.win
+    when @game.dealer
       puts "\nПобедил Дилер, у него: #{@game.dealer.balance}$"
-    elsif @game.win == @game.user
+    when @game.user
       puts "\nВы победили, у вас: #{@game.user.balance}$"
-    elsif @game.win == 'draw'
+    when 'draw'
       puts "\nНичья, все остались при своих деньгах."
       puts "У #{@game.user.name} - #{@game.user.balance}$"
       puts "У #{@game.dealer.name} - #{@game.dealer.balance}$"
-    end
-    again
-  end
-
-  def processing_message
-    if @game.win == @game.dealer
-      puts "\nПобедил Дилер, теперь у него: #{@game.dealer.balance}$"
-    elsif @game.win == @game.user
-      puts "\nВы победили, теперь у вас: #{@game.user.balance}$"
-    elsif @game.win == 'busts'
+    when 'busts'
       puts "\nВы оба обанкротились!!!"
     end
     again

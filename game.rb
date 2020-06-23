@@ -67,21 +67,13 @@ class Game
   end
 
   def processing
-    if @user.hand.score > 21 && @dealer.hand.score < 22
+    if @user.hand.score > 21 && @dealer.hand.score < 22 || @dealer.hand.score <= 21 && @dealer.hand.score > @user.hand.score
       @win = @dealer
-    elsif  @dealer.hand.score > 21 && @user.hand.score < 22
+    elsif  @dealer.hand.score > 21 && @user.hand.score < 22 || @user.hand.score <= 21 && @user.hand.score > @dealer.hand.score
       @win = @user
     elsif  @user.hand.score > 21 && @dealer.hand.score > 21
       @win = 'busts'
-    end
-  end
-
-  def great
-    if @user.hand.score <= 21 && @user.hand.score > @dealer.hand.score
-      @win = @user
-    elsif @dealer.hand.score <= 21 && @dealer.hand.score > @user.hand.score
-      @win = @dealer
-    elsif @user.hand.score == @dealer.hand.score
+    elsif @user.hand.score == @dealer.hand.score && @user.hand.score < 21 && @dealer.hand.score < 21
       @win = 'draw'
     end
   end
@@ -101,7 +93,6 @@ class Game
     @user.hand.count_cards
     @dealer.hand.count_cards
     processing
-    great
     calculation
   end
 
