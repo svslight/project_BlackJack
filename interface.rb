@@ -42,9 +42,10 @@ class Interface
 
   def stand
     @game.dealers_step
-    if @game.dealer.hand.cards.count == 3
+
+    if @game.valid_cards
       puts "\nДилер взял карту, у него 3 карты: [*] [*] [*]"
-      @game.valid_cards ? open : main_menu
+      open
     else
       puts "\nДилер пропустил ход..."
       main_menu
@@ -52,14 +53,13 @@ class Interface
   end
 
   def hit
-    if @game.user.hand.cards.count == 3
+    if @game.valid_cards_user
       puts "\nУ вас максимальное количество карт!"
       main_menu
     else
       @game.one_card
       puts "\nВы взяли карту, у вас на руках: #{@game.user.hand.cards.map(&:face)}"
       puts "У вас #{@game.user.hand.count_cards} очков"
-      @game.dealers_step
       stand
     end
   end
@@ -99,7 +99,7 @@ class Interface
 
   def again
     @game.post_game
-    puts "\n1: Сыграть еще раз?  2: Выйти"
+    puts "\n---------- 1: Сыграть еще раз?  2: Выйти ------------"
     choice = gets.chomp
     choice == '1' ? start_game : exit
   end

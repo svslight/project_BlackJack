@@ -32,7 +32,11 @@ class Game
   end
 
   def valid_cards
-    @user.hand.cards.count && @dealer.hand.cards.count == 3
+    @dealer.hand.cards.count == 3
+  end
+
+  def valid_cards_user
+    @user.hand.cards.count == 3
   end
 
   def bit
